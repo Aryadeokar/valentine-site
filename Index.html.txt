@@ -1,0 +1,249 @@
+index.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For Janhavi ❤️</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Great+Vibes&display=swap');
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+font-family:'Playfair Display',serif;
+background:#ffffff;
+overflow:hidden;
+}
+
+.page{
+position:absolute;
+width:100%;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+transition:0.5s ease;
+padding:20px;
+}
+
+/* PAGE 1 */
+#proposalPage{
+background:white;
+}
+
+h1{
+font-size:clamp(28px,5vw,48px);
+font-weight:700;
+color:#e6005c;
+margin-bottom:40px;
+}
+
+.buttons{
+display:flex;
+gap:20px;
+position:relative;
+}
+
+button{
+padding:14px 35px;
+font-size:18px;
+border:none;
+border-radius:30px;
+cursor:pointer;
+transition:0.3s ease;
+}
+
+#yesBtn{
+background:linear-gradient(45deg,#ff4d88,#ff0066);
+color:white;
+box-shadow:0 5px 15px rgba(255,0,102,0.3);
+}
+
+#yesBtn:hover{
+transform:scale(1.1);
+}
+
+#noBtn{
+background:#ccc;
+color:#444;
+position:absolute;
+}
+
+/* PAGE 2 */
+#successPage{
+background:linear-gradient(to bottom,#fff0f5,#ffe6f0);
+display:none;
+overflow:auto;
+padding:40px 20px;
+}
+
+.success-container{
+max-width:500px;
+}
+
+.success-container img{
+width:100%;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.2);
+margin-bottom:20px;
+}
+
+.caption{
+font-family:'Great Vibes',cursive;
+font-size:36px;
+color:#ff0066;
+margin-top:10px;
+}
+
+/* Floating hearts */
+.heart{
+position:absolute;
+color:#ff4d88;
+font-size:20px;
+animation:floatUp 5s linear infinite;
+opacity:0.7;
+}
+
+@keyframes floatUp{
+0%{transform:translateY(100vh);opacity:0;}
+50%{opacity:1;}
+100%{transform:translateY(-10vh);opacity:0;}
+}
+
+/* Confetti */
+.confetti{
+position:fixed;
+width:8px;
+height:8px;
+background:red;
+top:50%;
+left:50%;
+opacity:1;
+animation:explode 1.2s ease-out forwards;
+}
+
+@keyframes explode{
+to{
+transform:translate(var(--x), var(--y)) rotate(720deg);
+opacity:0;
+}
+}
+</style>
+</head>
+
+<body>
+
+<!-- Background Music -->
+<audio id="bgMusic" loop>
+<source src="https://cdn.pixabay.com/download/audio/2022/10/25/audio_52b8f7a6fa.mp3?filename=romantic-love-117079.mp3" type="audio/mp3">
+</audio>
+
+<!-- PAGE 1 -->
+<div id="proposalPage" class="page">
+<h1>Janhavi, will you be my Valentine?</h1>
+
+<div class="buttons">
+<button id="yesBtn">Yes ❤️</button>
+<button id="noBtn">No</button>
+</div>
+</div>
+
+<!-- PAGE 2 -->
+<div id="successPage" class="page">
+<div class="success-container">
+<img src="FBCA631D-25B8-41CC-83A6-108EC805CBBB.jpeg" alt="Valentine Photo">
+<div class="caption">My Bayko 😔❤️</div>
+</div>
+</div>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const proposalPage = document.getElementById("proposalPage");
+const successPage = document.getElementById("successPage");
+const bgMusic = document.getElementById("bgMusic");
+
+/* Move NO button */
+document.addEventListener("mousemove", e => moveButton(e.clientX, e.clientY));
+document.addEventListener("touchmove", e => {
+const touch = e.touches[0];
+moveButton(touch.clientX, touch.clientY);
+});
+
+function moveButton(x,y){
+const rect = noBtn.getBoundingClientRect();
+const distance = Math.hypot(
+x - (rect.left + rect.width/2),
+y - (rect.top + rect.height/2)
+);
+
+if(distance < 120){
+let moveX = (Math.random()-0.5)*300;
+let moveY = (Math.random()-0.5)*300;
+
+let newLeft = rect.left + moveX;
+let newTop = rect.top + moveY;
+
+newLeft = Math.max(0, Math.min(window.innerWidth - rect.width, newLeft));
+newTop = Math.max(0, Math.min(window.innerHeight - rect.height, newTop));
+
+noBtn.style.position="fixed";
+noBtn.style.left=newLeft+"px";
+noBtn.style.top=newTop+"px";
+}
+}
+
+/* YES CLICK */
+yesBtn.addEventListener("click",()=>{
+proposalPage.style.display="none";
+successPage.style.display="flex";
+
+/* Play music */
+bgMusic.play();
+
+/* Hearts */
+createHearts();
+
+/* Confetti explosion */
+createConfetti();
+});
+
+/* Floating hearts */
+function createHearts(){
+setInterval(()=>{
+const heart=document.createElement("div");
+heart.classList.add("heart");
+heart.innerHTML="❤️";
+heart.style.left=Math.random()*100+"vw";
+heart.style.fontSize=(Math.random()*20+15)+"px";
+heart.style.animationDuration=(Math.random()*3+3)+"s";
+successPage.appendChild(heart);
+setTimeout(()=>heart.remove(),5000);
+},300);
+}
+
+/* Confetti */
+function createConfetti(){
+for(let i=0;i<150;i++){
+const conf=document.createElement("div");
+conf.classList.add("confetti");
+conf.style.background=`hsl(${Math.random()*360},100%,50%)`;
+conf.style.setProperty('--x',(Math.random()-0.5)*800+'px');
+conf.style.setProperty('--y',(Math.random()-0.5)*800+'px');
+document.body.appendChild(conf);
+setTimeout(()=>conf.remove(),1200);
+}
+}
+</script>
+
+</body>
+</html>
